@@ -471,12 +471,12 @@
     },
 
     {
-      "path": "/src/cryptonote_core/blockchain.cpp",
+      "path": "/src/hardforks/hardforks.cpp",
       "multiline": true,
       "changes": [
         {
           "action": "replace",
-          "marker": "(} mainnet_hard_forks\\[\\] = {)[^;]+(};)",
+          "marker": "(} mainnet_hard_forks[] = {) ",
           "parameters": {
             "text": [
               "\\1\\n%MAINNET_HARDFORKS%\\n\\2"
