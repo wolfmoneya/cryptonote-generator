@@ -366,7 +366,7 @@
           "marker": "(std::set<std::string> full_addrs;)[^@]+(return full_addrs;)",
           "parameters": {
             "text": [
-              "\\1\\n    if (nettype == cryptonote::TESTNET) {\\n    } else {\\n%MAINNET_SEED_NODES%\\n    }\\n    \\2"
+              "\\1\\n    if (nettype == cryptonote::TESTNET) {\\n    } else {\\n%MAINNET%\\n    }\\n    \\2"
             ]
           }
         }
@@ -377,7 +377,7 @@
       "changes": [
         {
           "action": "replace",
-          "marker": "%MAINNET_SEED_NODES%",
+          "marker": "MAINNET",
           "parameters": {
             "text": [
               "%s"
@@ -425,7 +425,7 @@
       "changes": [
         {
           "action": "replace",
-          "marker": "%MAINNET_CHECKPOINTS%",
+          "marker": "TESTNET",
           "parameters": {
             "text": [
               "%s"
@@ -476,7 +476,7 @@
       "changes": [
         {
           "action": "replace",
-          "marker": "(} mainnet_hard_forks[] = {) ",
+          "marker": "const uint64_t mainnet_hard_fork_version_1_till = 1009826",
           "parameters": {
             "text": [
               "\\1\\n%MAINNET_HARDFORKS%\\n\\2"
@@ -485,7 +485,7 @@
         },
         {
           "action": "replace",
-          "marker": "(} testnet_hard_forks\\[\\] = {)[^;]+(};)",
+          "marker": "const uint64_t testnet_hard_fork_version_1_till = 624633",
           "parameters": {
             "text": [
               "\\1\\n%TESTNET_HARDFORKS%\\n\\2"
@@ -500,7 +500,7 @@
 
           {
             "action": "add_above",
-            "marker": "bool valid = hash == m_blocks_hash_of_hashes[n];",
+            "marker": "bool valid = hash == m_blocks_hash_of_hashes[n].first;",
             "parameters": {
               "text": [
                   "MWARNING(\"block: \" << height << \" - \" << epee::string_tools::pod_to_hex(hashes.front()));",
@@ -512,17 +512,17 @@
 
         {
           "action": "replace",
-          "marker": "%MAINNET_HARDFORKS%",
+          "marker": "mainnet_hard_fork_version_1_till",
           "parameters": {
             "text": [
               "%s"
             ],
-            "var": "MAINNET_HARDFORKS"
+            "var": "MAINNET_HARDFORK_V1_LAST_BLOCK"
           }
         },
         {
           "action": "replace",
-          "marker": "%TESTNET_HARDFORKS%",
+          "marker": "testnet_hard_fork_version_1_till",
           "parameters": {
             "text": [
               "%s"
@@ -530,12 +530,12 @@
             "replace_text_alt": [
               ""
             ],
-            "var": "TESTNET_HARDFORKS"
+            "var": "TESTNET_HARDFORK_V1_LAST_BLOCK"
           }
         },
         {
           "action": "replace",
-          "marker": "static const uint64_t mainnet_hard_fork_version_1_till = 1009826;",
+          "marker": "mainnet_hard_fork_version_1_till",
           "parameters": {
             "text": [
               "static const uint64_t mainnet_hard_fork_version_1_till = ((uint64_t)(%s));"
@@ -545,7 +545,7 @@
         },
         {
           "action": "replace",
-          "marker": "static const uint64_t testnet_hard_fork_version_1_till = 624633;",
+          "marker": "testnet_hard_fork_version_1_till",
           "parameters": {
             "text": [
               "static const uint64_t testnet_hard_fork_version_1_till = ((uint64_t)(%s));"
@@ -623,7 +623,8 @@
       "changes": [
         {
           "action": "replace",
-          "marker": "LOG_PRINT_L0(\"WARNING: no two valid MoneroPulse DNS checkpoint records were received\");",
+
+          "marker": "LOG_PRINT_L0(\"WARNING: no two valid DNS TXT records were received\");",
           "parameters": {
             "text": [
               "    LOG_PRINT_L0(\"WARNING: no two valid %sPulse DNS checkpoint records were received\");"
@@ -633,7 +634,7 @@
         },
         {
           "action": "replace",
-          "marker": "LOG_PRINT_L0(\"WARNING: no two MoneroPulse DNS checkpoint records matched\");",
+          "marker": "LOG_PRINT_L0(\"WARNING: no two valid DNS TXT records were received\");",
           "parameters": {
             "text": [
               "    LOG_PRINT_L0(\"WARNING: no two %sPulse DNS checkpoint records matched\");"
