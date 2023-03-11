@@ -171,11 +171,13 @@ for file in extension['files']:
         sys.__stdout__.write("- Making pre-tests in file " + args.source + file['path'] + "\n")
         changes = list(file['changes'])
         for index, change in reverse_enumerate(changes):
+            print(change['marker'])
             TEMPLATE_re = re.compile(r"%s" % change['marker'], re.MULTILINE)
             match = TEMPLATE_re.search(work_file_content)
             if match:
                 sys.__stdout__.write("  + Pretest: marker exists - " + change['marker'] + "\n")
                 del changes[index]
+
 
         for index, change in reverse_enumerate(changes):
             if 'may_not_exist' in change and change['may_not_exist']:
@@ -193,12 +195,20 @@ for file in extension['files']:
             sys.__stdout__.write("  + Replaced text at marker: " + change['marker'] + "\n")
             replace_text = text_creator(change)
             if replace_text is not None:
-                TEMPLATE_re = re.compile(r"%s" % change['marker'], re.DOTALL)
-                work_file_content = TEMPLATE_re.sub(replace_text, work_file_content) + "\n"
+        # Escape any special characters in the pattern using re.escape()
+             escaped_marker = re.escape(change['marker'])
+        # Escape any special characters in the replacement text using re.escape()
+             escaped_replace_text = re.escape(replace_text)
+        # Compile the regex pattern with the DOTALL flag
+             TEMPLATE_re = re.compile(r"%s" % escaped_marker, re.DOTALL)
+        # Replace the pattern with the escaped replacement text
+             work_file_content = TEMPLATE_re.sub(escaped_replace_text, work_file_content) + "\n"
 
+# Write the modified file content back to the file
         work_file = open(args.source + file['path'], "w")
         work_file.write(work_file_content)
         work_file.close()
+
     # If not multiline - check line by line
     else:
         # Start pre-tests
