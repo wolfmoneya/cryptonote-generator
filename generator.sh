@@ -14,8 +14,6 @@ if [ "$OSTYPE" != "msys" ]; then
 	normal=$(tput sgr0)
 fi
 
-sed -i 's/\r//g' vars.cfg
-
 # Set directory vars
 . "vars.cfg"
 

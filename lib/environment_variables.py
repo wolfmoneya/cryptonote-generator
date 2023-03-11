@@ -1,18 +1,18 @@
+import json
 import argparse
 import sys
-import json
 
 
-def convert_to_bash(entity, prefix):
-    for key, value in entity.items():
-        if isinstance(value, dict):
-            convert_to_bash(entity[key], prefix + key + '_')
-        elif isinstance(value, list):
-            print("export " + str(prefix) + str(key) + "=(" + " ".join(json.dumps(str(item)) for item in value) + ")")
-        elif isinstance(value, int):
-            print("export " + str(prefix) + str(key) + "=" + str(value))
-        else:
-            print("export " + str(prefix) + str(key) + "=" + str(json.dumps(value)) + "")
+def convert_to_bash ( entity, prefix ):
+	for key, value in entity.iteritems():
+		if isinstance(value, dict):
+			convert_to_bash(entity[key], prefix + key + '_')
+		elif isinstance(value, list):
+			print "export " + str(prefix) + str(key) + "=(" + " ".join(json.dumps(str(item)) for item in value) + ")"
+		elif isinstance(value, int):
+			print "export " + str(prefix) + str(key) + "=" + str(value)
+		else:
+			print "export " + str(prefix) + str(key) + "=" + str(json.dumps(value)) + ""
 
 parser = argparse.ArgumentParser()
 
@@ -31,10 +31,12 @@ parser.add_argument('--prefix', action='store', dest='prefix',
 
 args = parser.parse_args()
 
-with open(args.config_file) as json_file:
-    config = json.load(json_file)
+json_data=open(args.config_file)
+config = json.load(json_data)
+json_data.close()
 
-with open(args.output, 'w+') as f:
-    sys.stdout = f
-    convert_to_bash(config, '__CONFIG' + args.prefix + '_')
-    sys.stdout = sys.__stdout__
+f = open(args.output, 'w+')
+sys.stdout = f
+convert_to_bash(config, '__CONFIG' + args.prefix + '_')
+sys.stdout = sys.__stdout__
+f.close()
